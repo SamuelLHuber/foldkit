@@ -138,22 +138,25 @@ export const ThemeMenuBinding = ApplicationDefinition.makeBinding(
   }),
 })
 
-export const ApplicationComposition = ApplicationDefinition.makeComposition({
-  bindings: [
-    ApiReferenceBinding,
-    ComingFromReactBinding,
-    CoreBlockPageBinding,
-    ExampleDetailBinding,
-    HomeBinding,
-    MobileMenuDialogBinding,
-    PlaygroundBinding,
-    SearchBinding,
-    SnippetCopyBinding,
-    SnippetDisclosureBinding,
-    ThemeMenuBinding,
-    UiPagesBinding,
-  ],
-})
+const bindings = [
+  ApiReferenceBinding,
+  ComingFromReactBinding,
+  CoreBlockPageBinding,
+  ExampleDetailBinding,
+  HomeBinding,
+  MobileMenuDialogBinding,
+  PlaygroundBinding,
+  SearchBinding,
+  SnippetCopyBinding,
+  SnippetDisclosureBinding,
+  ThemeMenuBinding,
+  UiPagesBinding,
+] as const
+
+export const ApplicationComposition: Block.CompositionFor<
+  typeof ApplicationDefinition,
+  typeof bindings
+> = ApplicationDefinition.makeComposition({ bindings })
 export type ApplicationViewBuilder = Block.ViewBuilderFor<
   typeof ApplicationComposition
 >

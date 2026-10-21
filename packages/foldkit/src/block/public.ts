@@ -52,6 +52,7 @@ export type {
   Base,
   MakeComposition,
   Composition,
+  CompositionFor,
   Completed,
   CompletedBlock,
   CompletedBlockWithOutMessage,

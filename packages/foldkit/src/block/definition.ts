@@ -3485,6 +3485,37 @@ export type Composition<
   >
 }
 
+/** The Composition produced by a Definition's `makeComposition` call for a
+ * given child Binding list. Derives every contract from the Definition value
+ * type, so it can annotate an exported Composition without repeating the
+ * Definition's type arguments. Explicitly annotating the Composition breaks
+ * member-access latency on the inferred factory call into a single deferred
+ * instantiation while the call's full validation still runs at the call site. */
+export type CompositionFor<
+  DefinitionValue,
+  Children extends ReadonlyArray<AnyBinding>,
+> =
+  DefinitionValue extends Readonly<{
+    owner: infer OwnerValue extends Owner<string>
+    Model: infer ModelSchema extends AnySchema
+    Message: infer MessageSchema extends AnySchema
+    [LocalMountsTypeId]: infer Mounts extends
+      ReadonlyArray<Mount.LayeredMountDefinition>
+  }>
+    ? Composition<
+        OwnerValue,
+        ModelSchema,
+        MessageSchema,
+        DefinitionValue extends Readonly<{
+          OutMessage: infer OutMessageSchema extends AnySchema
+        }>
+          ? OutMessageSchema
+          : undefined,
+        Mounts,
+        Children
+      >
+    : never
+
 /** Registers the child and Mount graph after the Block's typed operations are
  * authored. Both fields default to empty collections. Child OutMessage policies
  * must return this parent's Steps and declared OutMessages, and every sibling
