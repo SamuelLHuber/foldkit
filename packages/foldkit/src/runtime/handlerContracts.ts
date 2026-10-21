@@ -96,8 +96,9 @@ type ConflictingKeysForEntry<
 type ConflictingIndexedKeys<
   Entries extends HandlerEntryShape,
   Index,
+  IndexKeys extends keyof Index = keyof Index,
 > = Entries extends infer Left extends HandlerEntryShape
-  ? Left['key'] extends keyof Index
+  ? Left['key'] extends IndexKeys
     ? ConflictingKeysForEntry<
         Left,
         Extract<Index[Left['key']], HandlerEntryShape>

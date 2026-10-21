@@ -142,6 +142,19 @@ it('groups exact handler contracts by primitive and name', () => {
   expectTypeOf<
     ValidHandlerContracts<ScaledHandlerContracts>
   >().toEqualTypeOf<unknown>()
+  expectTypeOf<
+    ValidHandlerContracts<
+      | ScaledHandlerContracts
+      | Scoped<
+          'child-17',
+          Command.Handler<'Load', Readonly<{ id: 'other' }>, Message>
+        >
+    >
+  >().toEqualTypeOf<
+    Readonly<{
+      'Conflicting Foldkit handler contracts': 'child-17/Command/Load'
+    }>
+  >()
 })
 
 it('retains exact collision checks within literal and generic handler keys', () => {
